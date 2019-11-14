@@ -21,21 +21,30 @@ class StringCaterpillar {
     
     var body = [String]()
     
+    init() {
+        
+    }
+    
+    init(_ str: String) {
+        body.append(str)
+    }
+    
     func add(_ text:String) {
         // Note:
         // You must use the body array declared above to store the pieces.
         // It may be unnecessary to use an array for this but my intention is for you to practice using arrays.
+        body.append(text)
     }
     
     func go() {
-        
+        print(body.joined())
     }
     
 }
 // --- Your code goes above this line ---
 
 // --- Don't edit or add anything below this line ---
-let myCaterpillar = StringCaterpillar()
+let myCaterpillar = StringCaterpillar("hi")
 
 myCaterpillar.add("h")
 myCaterpillar.add("e")
@@ -51,7 +60,7 @@ myCaterpillar.go()
 // For Bonus Credit: 
 // Create a custom initializer so that you can declare a caterpillar object like this
 //
-// let myCaterpillar = StringCaterpillar("hi")
+//
 // 
 // The input for this init should be stored.
 //

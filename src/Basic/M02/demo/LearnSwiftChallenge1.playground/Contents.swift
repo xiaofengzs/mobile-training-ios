@@ -17,4 +17,8 @@ let array1 = ["dog", "cat", "bird", "pig"]
 let array2 = ["turtle", "snake", "lizard", "shark"]
 
 // Write your function below:
+func findAnimal(animal: String) -> Bool {
+    return array1.contains(animal) || array2.contains(animal)
+}
 
+print(findAnimal(animal: "duck"))

@@ -12,7 +12,11 @@ import UIKit
 
 class Person {
     
+    
+    
+    
     var name:String!
+
     
     init(_ fullName:String) {
         name = fullName
@@ -35,6 +39,15 @@ class Book {
 
 class Library {
     
+    let hintForNoBookInCatalogue: String = "Not in catalogue"
+    let hintForAvailableBook: String = "Available"
+    let hintForCheckedOutByPerson: String = "Checked out by "
+    let hintForBookNotExist: String = "Book doesn't exist"
+    let hintErrorForCheckedOut: String = "Error: Book already checked out"
+    let hintForCheckoutSuccess: String = "Successfully checked out"
+    let hitErrorForNoCheckIn: String = "Error: Can't check in a book that hasn't been checked out"
+    let hitForCheckInSuccess: String = "Successfully checked in"
+    
     var catalogue = ["ORW":Book("1985", "George Orwell"),
                      "RAY":Book("Fahrenheit 451", "Ray Bradbury")]
     
@@ -49,8 +62,17 @@ class Library {
         // Returns "Checked out by name" if the book exists and is checked out
         //
         // Returns "Not in catalogue" if the book doesn't exist
-        
-        return ""
+        let bookTitle = catalogue.filter{$1.title == title}.first?.value.title
+        if let bookTitle = bookTitle{
+            if let person = checkedOutBooks[bookTitle], let name = person.name {
+                return  hintForCheckedOutByPerson + name
+            } else {
+                return hintForAvailableBook
+            }
+        } else {
+            return hintForNoBookInCatalogue
+        }
+
     }
     
     func checkOut(_ bookId:String, _ person:Person) -> String {
@@ -62,8 +84,16 @@ class Library {
         // Returns "Successfully checked out" and adds the bookId,person key-value pair if the book doesn't currently exist in the checkedOutbooks dictionary
         //
         // Returns "Book doesn't exist" if the book isn't in the catalogue dictionary
-        
-        return ""
+        if let book = catalogue[bookId], let bookTitle = book.title {
+            if searchByTitle(bookTitle) == hintForNoBookInCatalogue {
+                return hintForBookNotExist
+            }
+            if checkedOutBooks[bookTitle] != nil {
+                return hintErrorForCheckedOut
+            }
+            checkedOutBooks[bookTitle] = person
+        }
+        return hintForCheckoutSuccess
     }
     
     func checkIn(_ bookId:String) -> String {
@@ -75,12 +105,17 @@ class Library {
         // Returns "Error: Can't check in a book that hasn't been checked out" if the book wasn't checked out in the first place
         //
         // Returns "Successfully checked in"
-        
-        
-        
-        return ""
+        if let book = catalogue[bookId], let bookTitle = book.title {
+            if searchByTitle(bookTitle) == hintForNoBookInCatalogue {
+                return hintForBookNotExist
+            }
+            if checkedOutBooks[bookTitle] == nil {
+                return hitErrorForNoCheckIn
+            }
+            checkedOutBooks.removeValue(forKey: bookTitle)
+        }
+        return hitForCheckInSuccess
     }
-    
 }
 // --- Your code goes above this line ---
 
